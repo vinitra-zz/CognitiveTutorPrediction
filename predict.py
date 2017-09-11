@@ -33,16 +33,16 @@ print(type(x_train))
 # model = Model(inputs=inputs, outputs=predictions)
 
 model = Sequential()
-model.add(Dense(units=32, activation='relu', input_dim=5))
+model.add(Dense(units=64, activation='relu', input_dim=5))
 model.add(Dense(units=32, activation='relu'))
 model.add(Dense(units=64, activation='softmax'))
-model.add(Dense(units=1, activation='softmax'))
+model.add(Dense(units=1, activation='sigmoid'))
 
 # model.add(Dense(units=5))
 # model.add(Activation('softmax'))
 
 model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
-model.fit(x_train, y_train, epochs=32, batch_size=20)
+model.fit(x_train, y_train, epochs=100, batch_size=10)
 
 model.summary()
 
@@ -55,3 +55,6 @@ classes = model.predict(x_test)
 
 print('Test Class predictions: ', classes)
 
+predictions = [1 if entry > 0.5 else 0 for entry in model.predict(raw_data.iloc[:, :-1].values).flatten()]
+results = pd.DataFrame(data={'Anon Student Id': raw_data.index, 'r5': predictions})
+results.to_csv('predictions.tsv', sep='\t', index=0)
