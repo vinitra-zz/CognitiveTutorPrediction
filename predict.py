@@ -33,20 +33,25 @@ print(type(x_train))
 # model = Model(inputs=inputs, outputs=predictions)
 
 model = Sequential()
-model.add(Dense(units=5, activation='relu', input_dim=5))
+model.add(Dense(units=32, activation='relu', input_dim=5))
+model.add(Dense(units=32, activation='relu'))
+model.add(Dense(units=64, activation='softmax'))
 model.add(Dense(units=1, activation='softmax'))
 
 # model.add(Dense(units=5))
 # model.add(Activation('softmax'))
 
 model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
-model.fit(x_train, y_train, epochs=5, batch_size=5)
+model.fit(x_train, y_train, epochs=32, batch_size=20)
+
+model.summary()
 
 loss_and_metrics = model.evaluate(x_test, y_test)
 
-print(loss_and_metrics)
+print('Loss and Metrics: ', loss_and_metrics)
+print('Accuracy: ', loss_and_metrics[1]*100, "%")
 
 classes = model.predict(x_test)
 
-print(classes)
+print('Test Class predictions: ', classes)
 
